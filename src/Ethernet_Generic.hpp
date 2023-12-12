@@ -231,8 +231,6 @@ class EthernetClass
     // Returns 0 if the DHCP configuration failed, and 1 if it succeeded
     int begin(uint8_t *mac, unsigned long timeout = 60000, unsigned long responseTimeout = 4000);
 
-    // New for SPI2, SPI3, etc. Not necessary now
-    int begin(uint8_t *mac, SPIClass *theSPI, unsigned long timeout = 60000, unsigned long responseTimeout = 4000);
     //////
 
     int maintain();
@@ -263,8 +261,8 @@ class EthernetClass
     inline const char* duplexReport(); // returns duplex mode as a string
     //////
     
-    inline EthernetLinkStatus linkStatus();
-    inline EthernetHardwareStatus hardwareStatus();
+    EthernetLinkStatus linkStatus();
+    EthernetHardwareStatus hardwareStatus();
 
     // Manual configuration
     void begin(uint8_t *mac, IPAddress ip);
@@ -272,12 +270,12 @@ class EthernetClass
     void begin(uint8_t *mac, IPAddress ip, IPAddress dns, IPAddress gateway);
     void begin(uint8_t *mac, IPAddress ip, IPAddress dns, IPAddress gateway, IPAddress subnet);
 
-    inline void init(uint8_t sspin = 10);
+    inline void init(uint8_t sspin = 10, SPIClass *theSPI = nullptr);
 
-    inline void MACAddress(uint8_t *mac_address);
-    inline IPAddress localIP();
-    inline IPAddress subnetMask();
-    inline IPAddress gatewayIP();
+    void MACAddress(uint8_t *mac_address);
+    IPAddress localIP();
+    IPAddress subnetMask();
+    IPAddress gatewayIP();
     
     inline IPAddress dnsServerIP() 
     {

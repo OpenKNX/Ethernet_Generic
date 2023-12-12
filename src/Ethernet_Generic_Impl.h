@@ -168,26 +168,6 @@ int EthernetClass::begin(uint8_t *mac, unsigned long timeout, unsigned long resp
 
 /////////////////////////////////////////////////////////
 
-int EthernetClass::begin(uint8_t *mac, SPIClass *theSPI, unsigned long timeout, unsigned long responseTimeout)
-{
-  if (theSPI != nullptr)
-  {
-    ETG_LOGDEBUG("begin: Using new theSPI");
-    pCUR_SPI = theSPI;
-  }
-  else
-  {
-    ETG_LOGDEBUG("begin: Using default SPI");
-    pCUR_SPI = &SPI;
-  }
-
-  ETG_LOGHEXDEBUG1("begin: pCUR_SPI = 0x", (uint32_t) pCUR_SPI);
-
-  return begin(mac, timeout, responseTimeout);
-}
-
-/////////////////////////////////////////////////////////
-
 void EthernetClass::begin(uint8_t *mac, IPAddress ip)
 {
   // Assume the DNS server will be the machine on the same network as the local IP
@@ -264,9 +244,22 @@ void EthernetClass::begin(uint8_t *mac, IPAddress ip, IPAddress dns, IPAddress g
 
 /////////////////////////////////////////////////////////
 
-void EthernetClass::init(uint8_t sspin)
+void EthernetClass::init(uint8_t sspin, SPIClass *theSPI)
 {
+  if (theSPI != nullptr)
+  {
+    ETG_LOGDEBUG("init: Using new theSPI");
+    pCUR_SPI = theSPI;
+  }
+  else
+  {
+    ETG_LOGDEBUG("init: Using default SPI");
+  }
+
+  ETG_LOGHEXDEBUG1("init: pCUR_SPI = 0x", (uint32_t) pCUR_SPI);
+
   W5100.setSS(sspin);
+  W5100.init();
 }
 
 /////////////////////////////////////////////////////////
